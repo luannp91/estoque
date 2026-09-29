@@ -111,3 +111,11 @@ criar-*.js
 fix-*.js
 audit.js
 testes-*.ps1
+
+
+# ==================== README ====================
+README.md
+README2.md
+README2(1).md
+MELHORIAS.md
+read.txt
