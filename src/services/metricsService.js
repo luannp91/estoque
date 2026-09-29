@@ -43,7 +43,7 @@ calcularUsoCpu();
 // ==================== HISTÓRICO (5s por amostra) ====================
 const historico = [];
 const MAX_HISTORICO = 120; // 120 * 5s = 10 minutos
-const INTERVALO_MS = 5000; // ⭐ era ~30s, agora 5s
+const INTERVALO_MS = 5000;
 
 function amostrar() {
     const mem = process.memoryUsage();
@@ -53,7 +53,7 @@ function amostrar() {
         ts: Date.now(),
         rss_mb: Math.round(mem.rss / 1024 / 1024),
         heap_mb: Math.round(mem.heapUsed / 1024 / 1024),
-        cpu_load_1m: cpu, // ⭐ agora é % real (0-100)
+        cpu_load_1m: cpu,
         uptime_s: Math.floor(process.uptime())
     });
 
@@ -94,7 +94,6 @@ function _resumo(minutos) {
     const erros500 = filtradas.filter((r) => r.status >= 500).length;
     const erros4xx = filtradas.filter((r) => r.status >= 400 && r.status < 500).length;
 
-    // 🛡️ Defensivo: trata `undefined`, `null` e NaN como 0
     const somaDuracao = filtradas.reduce((s, r) => {
         const d = Number(r.duracao);
         return s + (Number.isFinite(d) ? d : 0);
@@ -182,7 +181,6 @@ function getSnapshot() {
             plataforma: os.platform(),
             cpus: os.cpus().length,
             modelo_cpu: os.cpus()[0]?.model?.trim() || "desconhecido",
-            // ⭐ Coloca % real no "load_avg" para não precisar mudar o frontend
             load_avg: {
                 "1m": cpu,
                 "5m": cpu,
@@ -214,6 +212,7 @@ function getSnapshot() {
 }
 
 // ==================== AUDITORIA ====================
+// ⚠️ CORRIGIDO: papel do banco é 'super_admin', não 'super'
 function getAuditoria() {
     try {
         const usuarios = db
@@ -224,7 +223,7 @@ function getAuditoria() {
                 SUM(CASE WHEN totp_ativo = 1 THEN 1 ELSE 0 END) AS com_2fa,
                 SUM(CASE WHEN bloqueado_ate IS NOT NULL AND bloqueado_ate > datetime('now') THEN 1 ELSE 0 END) AS bloqueados,
                 SUM(CASE WHEN papel = 'admin' THEN 1 ELSE 0 END) AS admins,
-                SUM(CASE WHEN papel = 'super' THEN 1 ELSE 0 END) AS super_admins
+                SUM(CASE WHEN papel = 'super_admin' THEN 1 ELSE 0 END) AS super_admins
             FROM usuarios
         `
             )
@@ -293,9 +292,17 @@ function getAlertas() {
     const cpu = snap.sistema.load_avg["1m"];
 
     if (cpu >= 80) {
-        alertas.push({ nivel: "alto", titulo: `CPU em ${cpu}%`, descricao: "Uso de CPU acima de 80%." });
+        alertas.push({
+            nivel: "alto",
+            titulo: `CPU em ${cpu}%`,
+            descricao: "Uso de CPU acima de 80%."
+        });
     } else if (cpu >= 60) {
-        alertas.push({ nivel: "medio", titulo: `CPU em ${cpu}%`, descricao: "Uso de CPU moderadamente alto." });
+        alertas.push({
+            nivel: "medio",
+            titulo: `CPU em ${cpu}%`,
+            descricao: "Uso de CPU moderadamente alto."
+        });
     }
 
     if (snap.processo.memoria.rss_mb >= 500) {
@@ -335,18 +342,27 @@ function getAlertas() {
             )
             .get();
         if (t > 0) {
-            alertas.push({ nivel: "info", titulo: `${t} produto(s) com estoque baixo`, descricao: "Considere repor." });
+            alertas.push({
+                nivel: "info",
+                titulo: `${t} produto(s) com estoque baixo`,
+                descricao: "Considere repor."
+            });
         }
     } catch {}
 
     try {
+        // ⚠️ CORRIGIDO: 'super_admin' em vez de 'super'
         const { t } = db
             .prepare(
-                "SELECT COUNT(*) AS t FROM usuarios WHERE papel IN ('admin','super') AND totp_ativo = 0 AND ativo = 1"
+                "SELECT COUNT(*) AS t FROM usuarios WHERE papel IN ('admin','super_admin') AND totp_ativo = 0 AND ativo = 1"
             )
             .get();
         if (t > 0) {
-            alertas.push({ nivel: "medio", titulo: `${t} admin(s) sem 2FA`, descricao: "Ative 2FA para admins." });
+            alertas.push({
+                nivel: "medio",
+                titulo: `${t} admin(s) sem 2FA`,
+                descricao: "Ative 2FA para admins."
+            });
         }
     } catch {}
 
@@ -358,14 +374,15 @@ function auditarSeguranca() {
     const problemas = [];
 
     try {
+        // ⚠️ CORRIGIDO: 'super_admin' em vez de 'super'
         const sem2fa = db
             .prepare(
-                "SELECT nome, email, papel FROM usuarios WHERE papel IN ('admin','super') AND totp_ativo = 0 AND ativo = 1"
+                "SELECT nome, email, papel FROM usuarios WHERE papel IN ('admin','super_admin') AND totp_ativo = 0 AND ativo = 1"
             )
             .all();
         for (const u of sem2fa) {
             problemas.push({
-                nivel: u.papel === "super" ? "critico" : "aviso",
+                nivel: u.papel === "super_admin" ? "critico" : "aviso",
                 texto: `Admin "${u.nome}" (${u.email}) sem 2FA ativo`
             });
         }
@@ -378,7 +395,10 @@ function auditarSeguranca() {
             )
             .all();
         for (const u of bloqueadas) {
-            problemas.push({ nivel: "aviso", texto: `Conta bloqueada: "${u.nome}" (${u.email})` });
+            problemas.push({
+                nivel: "aviso",
+                texto: `Conta bloqueada: "${u.nome}" (${u.email})`
+            });
         }
     } catch {}
 
@@ -388,8 +408,17 @@ function auditarSeguranca() {
                 "SELECT COUNT(*) AS t FROM logs_sistema WHERE acao = 'SEC_LOGIN_FALHA' AND criado_em >= datetime('now', '-1 hour')"
             )
             .get();
-        if (t > 20) problemas.push({ nivel: "critico", texto: `${t} tentativas de login falhas na última hora` });
-        else if (t > 5) problemas.push({ nivel: "aviso", texto: `${t} tentativas de login falhas na última hora` });
+        if (t > 20) {
+            problemas.push({
+                nivel: "critico",
+                texto: `${t} tentativas de login falhas na última hora`
+            });
+        } else if (t > 5) {
+            problemas.push({
+                nivel: "aviso",
+                texto: `${t} tentativas de login falhas na última hora`
+            });
+        }
     } catch {}
 
     try {
@@ -399,7 +428,10 @@ function auditarSeguranca() {
             )
             .all();
         if (antigas.length > 0) {
-            problemas.push({ nivel: "info", texto: `${antigas.length} usuário(s) com senha há mais de 90 dias` });
+            problemas.push({
+                nivel: "info",
+                texto: `${antigas.length} usuário(s) com senha há mais de 90 dias`
+            });
         }
     } catch {}
 
@@ -410,7 +442,10 @@ function auditarSeguranca() {
             )
             .get();
         if (t > 0) {
-            problemas.push({ nivel: "info", texto: `${t} produto(s) na lixeira há mais de 60 dias` });
+            problemas.push({
+                nivel: "info",
+                texto: `${t} produto(s) na lixeira há mais de 60 dias`
+            });
         }
     } catch {}
 
@@ -420,7 +455,12 @@ function auditarSeguranca() {
                 "SELECT COUNT(*) AS t FROM logs_sistema WHERE nivel = 'error' AND criado_em >= datetime('now', '-24 hour')"
             )
             .get();
-        if (t > 10) problemas.push({ nivel: "aviso", texto: `${t} erros nas últimas 24h` });
+        if (t > 10) {
+            problemas.push({
+                nivel: "aviso",
+                texto: `${t} erros nas últimas 24h`
+            });
+        }
     } catch {}
 
     return {
@@ -430,6 +470,20 @@ function auditarSeguranca() {
         problemas
     };
 }
+
+// ==================== 🆕 PUSH DE MÉTRICAS VIA WEBSOCKET ====================
+// Substitui o polling de 10s do frontend.
+// O servidor empurra o snapshot a cada 15s para todos os super-admins conectados.
+setInterval(() => {
+    try {
+        const realtime = require("./realtimeService");
+        if (realtime && typeof realtime.emit === "function") {
+            realtime.emit("metricas:update", getSnapshot());
+        }
+    } catch {
+        /* realtimeService pode não estar pronto no boot — ignora */
+    }
+}, 15000);
 
 module.exports = {
     getSnapshot,
