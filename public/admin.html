@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Administração - Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <main class="container">
+            <!-- Cards de estatísticas -->
+            <div class="stats-grid" id="stats-admin"></div>
+
+            <!-- Lista de usuários -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem">
+                    <h2 style="margin: 0">👥 Usuários</h2>
+                    <button onclick="abrirFormUsuario()">+ Novo Usuário</button>
+                </div>
+
+                <div class="toolbar">
+                    <div class="campo">
+                        <label>Buscar</label>
+                        <input id="filtro-busca" placeholder="Nome ou e-mail..." />
+                    </div>
+                    <div class="campo">
+                        <label>Papel</label>
+                        <select id="filtro-papel">
+                            <option value="">Todos</option>
+                            <option value="admin">Administrador</option>
+                            <option value="operador">Operador</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label>Status</label>
+                        <select id="filtro-ativo">
+                            <option value="">Todos</option>
+                            <option value="true">Ativos</option>
+                            <option value="false">Inativos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="tabela"></div>
+                <div id="paginacao" class="paginacao"></div>
+            </div>
+
+            <!-- 💾 Backup -->
+            <div class="card">
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 1rem;
+                        margin-bottom: 1rem;
+                    ">
+                    <h2 style="margin: 0">💾 Backup do Banco de Dados</h2>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
+                        <button onclick="criarBackupManual()">📥 Salvar Backup</button>
+                        <button class="secundario" onclick="baixarBackup()">⬇ Baixar Agora</button>
+                    </div>
+                </div>
+                <p style="color: var(--texto-suave); font-size: 0.9rem; margin-bottom: 1rem">
+                    Backups automáticos são gerados a cada <strong>12 horas</strong> (00:00 e 12:00). Todos os backups
+                    são <strong>criptografados com AES-256-GCM</strong>. Os últimos 20 são preservados.
+                </p>
+                <div id="backup-info" style="margin-bottom: 1rem"></div>
+                <div id="lista-backups"></div>
+            </div>
+
+            <!-- ⚠️ Restauração -->
+            <div class="card" style="border-color: #f59e0b">
+                <h2 style="color: #b45309">⚠️ Restaurar Banco de Dados</h2>
+                <p style="color: var(--texto-suave); font-size: 0.9rem; margin-bottom: 1rem">
+                    <strong>Atenção:</strong> a restauração substitui <strong>todos</strong> os dados atuais (produtos,
+                    categorias, movimentações e usuários) pelo conteúdo do arquivo enviado. Um backup de segurança é
+                    criado automaticamente antes da substituição. Você será desconectado após o processo.
+                </p>
+
+                <p
+                    style="
+                        color: var(--texto-suave);
+                        font-size: 0.85rem;
+                        margin-bottom: 1rem;
+                        background: var(--bg);
+                        padding: 0.75rem;
+                        border-radius: 8px;
+                    ">
+                    💡 <strong>Formatos aceitos:</strong> <code>.db.cifrado</code> (backup criptografado padrão) ou
+                    <code>.db</code> (backup antigo sem criptografia).
+                </p>
+
+                <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap">
+                    <!-- 🔧 CORRIGIDO: accept com todas as extensões suportadas -->
+                    <input
+                        type="file"
+                        id="arquivo-restore"
+                        accept=".db,.cifrado,.db.cifrado,application/octet-stream,application/x-sqlite3" />
+                    <button class="secundario" onclick="validarRestore()">🔍 Validar</button>
+                    <button class="perigo" onclick="restaurarBackup()">⬆ Restaurar</button>
+                </div>
+
+                <div id="restore-info" style="margin-top: 1rem"></div>
+            </div>
+        </main>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/admin.js"></script>
+    </body>
+</html>

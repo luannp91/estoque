@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Produtos - Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <main class="container">
+            <div class="card">
+                <!-- ============ HEADER PADRONIZADO ============ -->
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">📦 Produtos</h2>
+                        <p class="page-desc">Gerencie o catálogo de produtos, estoque e movimentações.</p>
+                    </div>
+                    <div class="page-actions">
+                        <button id="btn-novo" onclick="abrirFormProduto()">+ Novo Produto</button>
+                    </div>
+                </div>
+
+                <!-- ============ ABAS ============ -->
+                <div class="tabs" role="tablist">
+                    <button class="tab ativo" data-tab="ativos" onclick="mudarAba('ativos')">Produtos Ativos</button>
+                    <button class="tab" data-tab="lixeira" onclick="mudarAba('lixeira')">
+                        🗑️ Lixeira
+                        <span class="tab-badge" id="tab-badge-lixeira" style="display: none">0</span>
+                    </button>
+                </div>
+
+                <!-- ============ SEÇÃO: ATIVOS ============ -->
+                <section id="secao-ativos">
+                    <div class="toolbar">
+                        <div class="campo">
+                            <label>Buscar</label>
+                            <input id="filtro-busca" placeholder="Nome, SKU ou descrição..." />
+                        </div>
+                        <div class="campo">
+                            <label>Categoria</label>
+                            <select id="filtro-categoria">
+                                <option value="">Todas</option>
+                            </select>
+                        </div>
+                        <div class="campo">
+                            <label>Status</label>
+                            <select id="filtro-status">
+                                <option value="">Todos</option>
+                                <option value="baixo">Estoque baixo</option>
+                                <option value="ativos">Somente ativos</option>
+                            </select>
+                        </div>
+                        <button class="secundario" onclick="exportarCSV()">⬇ Exportar CSV</button>
+                    </div>
+
+                    <div id="tabela"></div>
+                    <div id="paginacao" class="paginacao"></div>
+                </section>
+
+                <!-- ============ SEÇÃO: LIXEIRA ============ -->
+                <section id="secao-lixeira" style="display: none">
+                    <div class="toolbar">
+                        <p class="section-desc" style="flex: 1; margin: 0">
+                            Produtos removidos ficam aqui. Você pode restaurá-los ou esvaziar a lixeira permanentemente.
+                        </p>
+                        <button class="perigo" id="btn-esvaziar" onclick="esvaziarLixeira()">
+                            🧹 Esvaziar Lixeira
+                        </button>
+                    </div>
+
+                    <div id="tabela-lixeira"></div>
+                    <div id="paginacao-lixeira" class="paginacao"></div>
+                </section>
+            </div>
+        </main>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/produtos.js"></script>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Movimentações - Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <main class="container">
+            <div class="card">
+                <h2>Histórico de Movimentações</h2>
+                <div class="toolbar">
+                    <div class="campo">
+                        <label>Tipo</label>
+                        <select id="filtro-tipo">
+                            <option value="">Todos</option>
+                            <option value="entrada">Entrada</option>
+                            <option value="saida">Saída</option>
+                            <option value="ajuste">Ajuste</option>
+                            <option value="cadastro">Cadastro</option>
+                            <option value="remocao">Remoção</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="tabela"></div>
+                <div id="paginacao" class="paginacao"></div>
+            </div>
+        </main>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/movimentacoes.js"></script>
+    </body>
+</html>

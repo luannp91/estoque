@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Logs de Atividades - Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <main class="container">
+            <div class="stats-grid" id="stats-logs"></div>
+
+            <div class="card">
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 1rem;
+                        margin-bottom: 1rem;
+                    ">
+                    <h2 style="margin: 0">📜 Log de Atividades</h2>
+                    <button class="secundario" onclick="limparAntigos()">🧹 Limpar +90 dias</button>
+                </div>
+
+                <div class="toolbar">
+                    <div class="campo">
+                        <label>Buscar</label>
+                        <input id="filtro-busca" placeholder="Ação, descrição ou usuário..." />
+                    </div>
+                    <div class="campo">
+                        <label>Ação</label>
+                        <select id="filtro-acao">
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label>Entidade</label>
+                        <select id="filtro-entidade">
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label>Nível</label>
+                        <select id="filtro-nivel">
+                            <option value="">Todos</option>
+                            <option value="info">Info</option>
+                            <option value="warn">Aviso</option>
+                            <option value="error">Erro</option>
+                        </select>
+                    </div>
+                    <div class="campo"><label>De</label><input type="date" id="filtro-inicio" /></div>
+                    <div class="campo"><label>Até</label><input type="date" id="filtro-fim" /></div>
+                </div>
+
+                <div id="tabela"></div>
+                <div id="paginacao" class="paginacao"></div>
+            </div>
+        </main>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/logs.js"></script>
+    </body>
+</html>

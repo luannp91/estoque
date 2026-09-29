@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Categorias - Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <main class="container">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem">
+                    <h2 style="margin: 0">Categorias</h2>
+                    <button onclick="abrirFormCategoria()">+ Nova Categoria</button>
+                </div>
+                <div id="tabela"></div>
+            </div>
+        </main>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/categorias.js"></script>
+    </body>
+</html>

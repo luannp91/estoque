@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Relatórios - Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <main class="container">
+            <div class="card">
+                <h2>📊 Relatórios</h2>
+                <div class="toolbar">
+                    <div class="campo">
+                        <label>Início</label>
+                        <input type="date" id="inicio" />
+                    </div>
+                    <div class="campo">
+                        <label>Fim</label>
+                        <input type="date" id="fim" />
+                    </div>
+                    <button onclick="carregar()">Aplicar</button>
+                    <button class="secundario" onclick="exportarCSV()">⬇ Exportar CSV</button>
+                    <button onclick="abrirRelatorio()">📄 Ver Relatório Completo</button>
+                </div>
+                <div id="conteudo"></div>
+            </div>
+        </main>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/relatorios.js?v=2"></script>
+    </body>
+</html>

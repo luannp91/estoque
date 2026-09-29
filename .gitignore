@@ -1,0 +1,113 @@
+# ==================== DEPENDÊNCIAS ====================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ==================== AMBIENTE ====================
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.development
+
+# ==================== BANCO DE DADOS ====================
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+estoque.db*
+estoque-test.db*
+estoque-security-test.db*
+
+# ==================== BACKUPS ====================
+backups/
+!backups/.gitkeep
+backups/*.db
+backups/*.db.cifrado
+backups/*.tmp
+
+# ==================== TEMPORÁRIOS ====================
+tmp/
+temp/
+.tmp-*.db
+.tmp-*.tmp
+*.tmp
+*.bak
+*.old
+*.orig
+
+# ==================== LOGS ====================
+*.log
+logs/
+.debug-*
+npm-debug.log*
+
+# ==================== COBERTURA DE TESTES ====================
+coverage/
+.jest-cache/
+.jest-cache-*
+.nyc_output/
+*.lcov
+
+# ==================== IDE / EDITOR ====================
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ==================== SISTEMA OPERACIONAL ====================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==================== SCRIPTS DE AUDITORIA ====================
+audit.js
+debug-*.js
+check-*.js
+testar-*.js
+verificar-*.js
+ver-*.js
+limpar-*.js
+reset-*.js
+criar-*.js
+fix-*.js
+
+# ==================== CERTIFICADOS / CHAVES ====================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.cer
+
+# ==================== BUILDS ====================
+dist/
+build/
+out/
+
+# Scripts de debug (para o futuro)
+debug-*.js
+check-*.js
+verificar-*.js
+testar-*.js
+teste-*.js
+limpar-*.js
+reset-*.js
+criar-*.js
+fix-*.js
+audit.js
+testes-*.ps1

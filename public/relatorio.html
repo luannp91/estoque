@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Relatório de Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/relatorio.css" />
+    </head>
+    <body>
+        <!-- Topbar (oculto na impressão) -->
+        <div id="topbar" class="no-print"></div>
+
+        <main class="relatorio-container">
+            <!-- Cabeçalho do relatório (aparece na tela e no PDF) -->
+            <header class="relatorio-header">
+                <div class="relatorio-titulo">
+                    <h1>📦 Relatório de Estoque</h1>
+                    <p class="relatorio-subtitulo">Sistema de Controle de Estoque</p>
+                </div>
+                <div class="relatorio-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Período:</span>
+                        <span class="meta-valor" id="meta-periodo">Carregando...</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Gerado em:</span>
+                        <span class="meta-valor" id="meta-gerado">Carregando...</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Botões de ação (ocultos na impressão) -->
+            <div class="relatorio-acoes no-print">
+                <button onclick="window.print()" class="btn-print">🖨️ Imprimir / Salvar PDF</button>
+                <button onclick="salvarExcel()" class="btn-excel">📊 Salvar Excel</button>
+                <button class="secundario" onclick="history.back()">↩️ Voltar</button>
+            </div>
+
+            <!-- Conteúdo do relatório -->
+            <div id="conteudo-relatorio">
+                <div class="loading-relatorio">
+                    <span class="spinner grande"></span>
+                    <span>Carregando relatório...</span>
+                </div>
+            </div>
+
+            <!-- Rodapé (aparece só na impressão) -->
+            <footer class="relatorio-rodape no-print">Relatório gerado automaticamente pelo Sistema de Estoque</footer>
+        </main>
+
+        <script src="js/app.js"></script>
+        <script src="js/relatorio-view.js?v=2"></script>
+    </body>
+</html>

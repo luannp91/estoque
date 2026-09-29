@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard - Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <main class="container">
+            <div class="stats-grid" id="stats"></div>
+
+            <div class="graficos-grid">
+                <div class="card">
+                    <h2>Produtos por Categoria</h2>
+                    <div class="grafico-card"><canvas id="grafico-categorias"></canvas></div>
+                </div>
+                <div class="campo">
+                    <h2>Top 5 Produtos por Valor</h2>
+                    <div class="grafico-card"><canvas id="grafico-top"></canvas></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>⚠️ Produtos com Estoque Baixo</h2>
+                <div id="estoque-baixo"></div>
+            </div>
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/dashboard.js"></script>
+    </body>
+</html>

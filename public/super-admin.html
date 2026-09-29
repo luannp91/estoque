@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Super Admin — Sistema de Estoque</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/super-admin.css" />
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <main class="container super-admin">
+            <!-- ==================== MÉTRICAS ==================== -->
+            <section class="card">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">👑 Painel Super-Admin</h2>
+                        <p class="page-desc">Monitoramento em tempo real — CPU, memória, requisições e eventos.</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="secundario" onclick="carregarMetricas()">🔄 Atualizar</button>
+                    </div>
+                </div>
+
+                <div id="metricas-kpis" class="stats-grid">
+                    <div class="loading"><span class="spinner"></span> Carregando métricas...</div>
+                </div>
+            </section>
+
+            <!-- ==================== GRÁFICOS ==================== -->
+            <section class="graficos-grid">
+                <div class="card">
+                    <h2>🧠 Memória (RSS / Heap)</h2>
+                    <div class="grafico-card"><canvas id="grafico-memoria"></canvas></div>
+                </div>
+                <div class="card">
+                    <h2>⚡ Uso de CPU (%)</h2>
+                    <div class="grafico-card"><canvas id="grafico-cpu"></canvas></div>
+                </div>
+            </section>
+
+            <!-- ==================== ALERTAS ==================== -->
+            <section class="card">
+                <h2>⚠️ Alertas Ativos</h2>
+                <div id="alertas-container">
+                    <div class="loading"><span class="spinner"></span> Verificando...</div>
+                </div>
+            </section>
+
+            <!-- ==================== AUDITORIA ==================== -->
+            <section class="card">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">🔍 Auditoria de Segurança</h2>
+                        <p class="page-desc">Estatísticas de segurança do sistema.</p>
+                    </div>
+                    <div class="page-actions">
+                        <button onclick="rodarAuditoria()">▶ Rodar Auditoria</button>
+                    </div>
+                </div>
+
+                <div id="auditoria-stats">
+                    <div class="loading"><span class="spinner"></span> Carregando estatísticas...</div>
+                </div>
+
+                <div id="auditoria-container" style="margin-top: 1rem"></div>
+            </section>
+
+            <!-- ==================== FEED ==================== -->
+            <section class="card">
+                <h2>📡 Eventos em Tempo Real</h2>
+                <div id="feed-eventos">
+                    <div class="loading"><span class="spinner"></span> Aguardando eventos...</div>
+                </div>
+            </section>
+        </main>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/super-admin.js"></script>
+    </body>
+</html>

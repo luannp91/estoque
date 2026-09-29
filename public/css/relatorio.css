@@ -1,0 +1,328 @@
+/* ============================================================
+   📄 RELATÓRIO — Reaproveita classes do style.css
+   ============================================================ */
+
+.relatorio-container {
+    max-width: 1100px;
+    margin: 1.5rem auto;
+    padding: 0 1.5rem 3rem;
+}
+
+/* ==================== CABEÇALHO ==================== */
+.relatorio-header {
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--primaria);
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.relatorio-titulo h1 {
+    font-size: 1.5rem;
+    color: var(--primaria);
+    margin: 0 0 0.25rem;
+}
+
+.relatorio-subtitulo {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin: 0;
+}
+
+.relatorio-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-align: right;
+    font-size: 0.85rem;
+}
+
+.meta-item {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: flex-end;
+    color: var(--texto-suave);
+}
+
+.meta-label {
+    font-weight: 600;
+}
+.meta-valor {
+    color: var(--texto);
+}
+
+/* ==================== AÇÕES ==================== */
+.relatorio-acoes {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    padding: 0.85rem;
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--borda);
+}
+
+.relatorio-acoes button {
+    padding: 0.65rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: none;
+}
+
+.btn-print {
+    background: var(--primaria);
+    color: white;
+}
+.btn-print:hover {
+    background: var(--primaria-escura, #1d4ed8);
+}
+
+.btn-excel {
+    background: #16a34a;
+    color: white;
+}
+.btn-excel:hover {
+    background: #15803d;
+}
+
+.relatorio-acoes .secundario {
+    background: var(--card);
+    color: var(--texto);
+    border: 1px solid var(--borda);
+}
+.relatorio-acoes .secundario:hover {
+    background: var(--bg);
+}
+
+/* ==================== SEÇÕES ==================== */
+.relatorio-secao {
+    margin-bottom: 2rem;
+    page-break-inside: avoid;
+}
+
+.secao-titulo {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--texto);
+    margin: 0 0 0.85rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--borda);
+}
+
+/* ==================== LOADING ==================== */
+.loading-relatorio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    color: var(--texto-suave);
+}
+
+/* ============================================================
+   📱 RESPONSIVO
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .relatorio-container {
+        margin: 0;
+        padding: 1rem;
+    }
+
+    .relatorio-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .relatorio-meta {
+        text-align: left;
+        align-items: flex-start;
+    }
+
+    .meta-item {
+        justify-content: flex-start;
+    }
+
+    .relatorio-acoes {
+        flex-direction: column;
+        padding: 0.75rem;
+    }
+
+    .relatorio-acoes button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .secao-titulo {
+        font-size: 0.95rem;
+    }
+
+    /* Força as classes utilitárias já existentes do style.css a funcionarem aqui */
+    .relatorio-secao .tabela-desktop {
+        display: none;
+    }
+    .relatorio-secao .lista-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .relatorio-secao .tabela-desktop {
+        display: block;
+    }
+    .relatorio-secao .lista-cards {
+        display: none;
+    }
+}
+
+/* ============================================================
+   🖨️ IMPRESSÃO — sempre mostra tabela, esconde cards
+   ============================================================ */
+@media print {
+    @page {
+        size: A4;
+        margin: 1.2cm 1cm;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 10pt;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .relatorio-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .relatorio-header {
+        border-bottom: 2px solid #000;
+        padding-bottom: 0.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .relatorio-titulo h1 {
+        font-size: 15pt;
+        color: #000;
+    }
+    .relatorio-subtitulo {
+        font-size: 9pt;
+        color: #444;
+    }
+
+    .relatorio-meta {
+        flex-direction: row;
+        gap: 1.5rem;
+        text-align: left;
+        font-size: 9pt;
+    }
+
+    .relatorio-secao {
+        margin-bottom: 1rem;
+        page-break-inside: avoid;
+    }
+
+    .relatorio-secao.grande {
+        page-break-inside: auto;
+    }
+
+    .secao-titulo {
+        font-size: 11pt;
+        color: #000;
+        border-bottom: 1px solid #999;
+        padding-bottom: 0.3rem;
+    }
+
+    /* 🔑 Força a tabela a aparecer e esconde cards */
+    .relatorio-secao .tabela-desktop {
+        display: block !important;
+    }
+    .relatorio-secao .lista-cards {
+        display: none !important;
+    }
+
+    /* Tabelas com header repetido em cada página */
+    .relatorio-secao table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 8.5pt;
+        border: 1px solid #999;
+    }
+
+    .relatorio-secao thead {
+        display: table-header-group;
+        background: #f0f0f0;
+    }
+
+    .relatorio-secao tr {
+        page-break-inside: avoid;
+    }
+
+    .relatorio-secao th,
+    .relatorio-secao td {
+        padding: 0.3rem 0.4rem;
+        border: 1px solid #ccc;
+        color: #000;
+    }
+
+    .relatorio-secao th {
+        font-size: 7.5pt;
+        text-transform: uppercase;
+    }
+
+    /* KPIs em linha */
+    .stats-grid {
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .stats-grid .stat {
+        flex: 1 1 auto;
+        min-width: 100px;
+        padding: 0.5rem;
+        background: white !important;
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+    }
+
+    .stats-grid .stat .rotulo {
+        font-size: 7pt;
+        color: #555;
+    }
+    .stats-grid .stat .valor {
+        font-size: 11pt;
+        color: #000;
+    }
+
+    /* Badges em preto/branco */
+    .badge {
+        font-size: 7pt;
+        padding: 0.1rem 0.35rem;
+    }
+
+    .relatorio-secao.quebra-pagina {
+        page-break-before: always;
+    }
+}
