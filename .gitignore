@@ -114,9 +114,8 @@ testes-*.ps1
 
 
 # ==================== README ====================
-README.md
-README2.md
-README2(1).md
+README(2).md
+README(1).md
 MELHORIAS.md
 read.txt
 prompt_pronto.md

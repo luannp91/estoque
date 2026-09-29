@@ -87,6 +87,34 @@ function ipSeguro(req) {
     return ipKeyGenerator(req.ip);
 }
 
+/**
+ * Rotas que NÃO devem contar no rate limit global.
+ * Só libera GETs de leitura/telemetria. POSTs, PUTs e DELETEs continuam contando.
+ */
+function deveIgnorarLimiteGlobal(req) {
+    const path = req.path || "";
+
+    // Rotas estáticas e health check (comportamento anterior)
+    if (path.startsWith("/public") || path === "/health") return true;
+
+    // Só pula GETs (POST/PUT/DELETE continuam contando para proteção)
+    if (req.method !== "GET") return false;
+
+    // Rotas de telemetria do super-admin (polling legítimo)
+    if (path.startsWith("/super-admin")) return true;
+
+    // /auth/me é chamado em toda navegação entre páginas
+    if (path === "/auth/me") return true;
+
+    // Dashboard é consultado em cada troca de tela
+    if (path === "/relatorios/dashboard") return true;
+
+    // Contagem da lixeira (badge da topbar, chamado a cada navegação)
+    if (path === "/produtos/lixeira/count") return true;
+
+    return false;
+}
+
 /** Limitador global (todas as rotas /api) */
 function limiterGlobal() {
     return rateLimit({
@@ -95,7 +123,7 @@ function limiterGlobal() {
         standardHeaders: true,
         legacyHeaders: false,
         message: { erro: "Muitas requisições. Tente novamente em alguns minutos." },
-        skip: (req) => req.path.startsWith("/public") || req.path === "/health",
+        skip: deveIgnorarLimiteGlobal,
         keyGenerator: (req) => ipSeguro(req)
     });
 }
