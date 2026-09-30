@@ -1,337 +1,369 @@
 /* ============================================================
-   👑 SUPER-ADMIN — Estilos específicos + Responsividade
+   👑 PAINEL SUPER-ADMIN — Estilos específicos
+   Segue o padrão do style.css do projeto.
+   NÃO sobrescreve .stats-grid, .graficos-grid, .card, .stat.
+   Breakpoints: 1024px (tablet), 640px (mobile)
    ============================================================ */
 
-/* ==================== KPIs ==================== */
-.super-admin #metricas-kpis {
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-}
-
-.super-admin .stat .valor {
-    font-size: 1.5rem;
-    margin-top: 0.35rem;
-}
-
-/* ==================== GRÁFICOS ==================== */
-.super-admin .graficos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+/* ==================== AVISO DE ACESSO ==================== */
+.super-aviso {
+    display: flex;
+    align-items: center;
     gap: 1.25rem;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: white;
+    border: 1px solid #334155;
 }
 
-.super-admin .grafico-card {
-    position: relative;
-    height: 280px;
+.super-aviso-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.super-aviso h2 {
+    color: white !important;
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.super-aviso p {
+    color: #94a3b8 !important;
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
 }
 
 /* ==================== ALERTAS ==================== */
 .alerta-item {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-left: 4px solid;
     display: flex;
     align-items: flex-start;
-    gap: 0.85rem;
-    padding: 0.9rem 1rem;
-    border-radius: 10px;
-    border-left: 4px solid var(--info);
-    background: var(--bg);
-    margin-bottom: 0.6rem;
+    gap: 0.75rem;
 }
 
 .alerta-item:last-child {
     margin-bottom: 0;
 }
 
-.alerta-item.info {
-    border-color: var(--info);
+.alerta-item.alto {
+    background: #fef2f2;
+    border-color: #dc2626;
 }
 .alerta-item.medio {
-    border-color: var(--alerta);
     background: #fef3c7;
+    border-color: #f59e0b;
 }
-.alerta-item.alto {
-    border-color: var(--perigo);
-    background: #fee2e2;
+.alerta-item.info {
+    background: #dbeafe;
+    border-color: #2563eb;
 }
 
-body.escuro .alerta-item.medio {
-    background: #78350f;
-    color: #fcd34d;
-}
 body.escuro .alerta-item.alto {
-    background: #7f1d1d;
-    color: #fca5a5;
+    background: #450a0a;
+}
+body.escuro .alerta-item.medio {
+    background: #451a03;
+}
+body.escuro .alerta-item.info {
+    background: #172554;
 }
 
-.alerta-icon {
+.alerta-item .alerta-icon {
     font-size: 1.25rem;
     flex-shrink: 0;
-    line-height: 1;
-    padding-top: 0.15rem;
+    line-height: 1.2;
 }
 
-.alerta-titulo {
+.alerta-item .alerta-titulo {
     font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--texto);
+    font-size: 0.95rem;
     margin-bottom: 0.2rem;
+    color: var(--texto);
 }
 
-.alerta-descricao {
-    font-size: 0.82rem;
+.alerta-item .alerta-descricao {
+    font-size: 0.85rem;
     color: var(--texto-suave);
-    line-height: 1.4;
+    word-break: break-word;
+}
+
+/* ==================== CONTAINER DO FEED ==================== */
+#feed-eventos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#feed-eventos > p {
+    margin-bottom: 0.5rem;
+}
+
+/* ==================== FEED — DESKTOP (lista horizontal, sem card) ==================== */
+.feed-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    border-left: 3px solid transparent;
+    background: transparent;
+    transition: background 0.2s;
+}
+
+.feed-item:hover {
+    background: var(--bg);
+}
+
+.feed-item.info {
+    border-color: #2563eb;
+}
+.feed-item.warn {
+    border-color: #f59e0b;
+}
+.feed-item.error {
+    border-color: #dc2626;
+}
+
+.feed-item .feed-hora {
+    font-family: ui-monospace, "Courier New", monospace;
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+    flex-shrink: 0;
+    min-width: 65px;
+}
+
+.feed-item .feed-ator {
+    font-weight: 600;
+    flex-shrink: 0;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--texto);
+}
+
+.feed-item .feed-acao {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    background: var(--bg);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--primaria);
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.feed-item .feed-desc {
+    flex: 1;
+    min-width: 0;
+    color: var(--texto-suave);
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* ==================== AUDITORIA ==================== */
 .auditoria-problema {
+    padding: 0.7rem 0.85rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
-    gap: 0.65rem;
-    padding: 0.65rem 0.85rem;
-    border-radius: 8px;
-    background: var(--bg);
-    margin-bottom: 0.4rem;
-    font-size: 0.88rem;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.auditoria-problema:last-child {
+    margin-bottom: 0;
 }
 
 .auditoria-problema.critico {
-    border-left: 3px solid var(--perigo);
+    background: #fee2e2;
+    color: #991b1b;
+    font-weight: 700;
 }
 .auditoria-problema.aviso {
-    border-left: 3px solid var(--alerta);
+    background: #fef3c7;
+    color: #92400e;
 }
 .auditoria-problema.info {
-    border-left: 3px solid var(--info);
+    background: #dbeafe;
+    color: #1e40af;
 }
 
-/* ==================== FEED EM TEMPO REAL ==================== */
-.feed-item {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 0.55rem 0.75rem;
-    border-radius: 8px;
-    background: var(--bg);
-    margin-bottom: 0.35rem;
-    font-size: 0.85rem;
-    transition: background 0.15s;
+body.escuro .auditoria-problema.critico {
+    background: #7f1d1d;
+    color: #fca5a5;
+}
+body.escuro .auditoria-problema.aviso {
+    background: #78350f;
+    color: #fcd34d;
+}
+body.escuro .auditoria-problema.info {
+    background: #1e3a8a;
+    color: #93c5fd;
 }
 
-.feed-item:hover {
-    background: var(--card);
-}
-
-.feed-item.info {
-    border-left: 3px solid var(--info);
-}
-.feed-item.warn {
-    border-left: 3px solid var(--alerta);
-}
-.feed-item.error {
-    border-left: 3px solid var(--perigo);
-}
-
-.feed-hora {
-    font-family: "Consolas", "Monaco", monospace;
-    color: var(--texto-suave);
-    font-size: 0.78rem;
-    flex-shrink: 0;
-    min-width: 60px;
-}
-
-.feed-ator {
-    font-weight: 600;
-    color: var(--texto);
-    flex-shrink: 0;
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.feed-acao {
-    font-family: "Consolas", "Monaco", monospace;
-    color: var(--primaria);
-    font-weight: 600;
-    font-size: 0.78rem;
-    background: var(--card);
-    padding: 0.1rem 0.5rem;
-    border-radius: 6px;
+.auditoria-problema .badge-nivel {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
 }
 
-/* Indicador "ao vivo" */
+/* ==================== INDICADOR AO VIVO ==================== */
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
 .ao-vivo {
     display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: var(--sucesso);
-    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
-    animation: pulsoAoVivo 2s infinite;
+    animation: pulse 1.5s infinite;
+    margin-right: 0.4rem;
     vertical-align: middle;
-    margin-right: 0.35rem;
-}
-
-@keyframes pulsoAoVivo {
-    0% {
-        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 8px rgba(22, 163, 74, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
-    }
 }
 
 /* ============================================================
-   📱 RESPONSIVO — TABLET (até 1024px)
+   📱 RESPONSIVO — TABLET (até 1024px) — FEED VIRA CARD
    ============================================================ */
 @media (max-width: 1024px) {
-    .super-admin #metricas-kpis {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    .super-aviso {
+        padding: 1.15rem;
+    }
+    .super-aviso-icon {
+        font-size: 2.15rem;
+    }
+    .super-aviso h2 {
+        font-size: 1.15rem;
+    }
+
+    /* 🎯 Feed vira CARD em tablet */
+    #feed-eventos {
         gap: 0.75rem;
     }
 
-    .super-admin .stat {
-        padding: 1rem;
-    }
-    .super-admin .stat .valor {
-        font-size: 1.35rem;
-    }
-    .super-admin .stat .rotulo {
-        font-size: 0.72rem;
-    }
-
-    .super-admin .graficos-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .super-admin .grafico-card {
-        height: 260px;
-    }
-}
-
-/* ============================================================
-   📱 RESPONSIVO — CELULAR (até 768px)
-   ============================================================ */
-@media (max-width: 768px) {
-    .super-admin .page-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
-    }
-
-    .super-admin .page-actions {
-        width: 100%;
-    }
-
-    .super-admin .page-actions button {
-        width: 100%;
-    }
-
-    /* KPIs em 2 colunas */
-    .super-admin #metricas-kpis {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.6rem;
-    }
-
-    .super-admin .stat {
-        padding: 0.85rem;
-        border-radius: 10px;
-    }
-
-    .super-admin .stat .rotulo {
-        font-size: 0.68rem;
-        letter-spacing: 0.03em;
-    }
-
-    .super-admin .stat .valor {
-        font-size: 1.2rem;
-        word-break: break-word;
-    }
-
-    /* Gráficos menores */
-    .super-admin .grafico-card {
-        height: 220px;
-    }
-
-    .super-admin .card h2 {
-        font-size: 1rem;
-    }
-
-    /* Alertas mais compactos */
-    .alerta-item {
-        padding: 0.75rem 0.85rem;
-        gap: 0.65rem;
-    }
-
-    .alerta-icon {
-        font-size: 1.1rem;
-    }
-    .alerta-titulo {
-        font-size: 0.85rem;
-    }
-    .alerta-descricao {
-        font-size: 0.78rem;
-    }
-
-    /* Feed empilhado */
     .feed-item {
-        flex-wrap: wrap;
-        gap: 0.35rem 0.5rem;
-        padding: 0.6rem 0.7rem;
-        font-size: 0.8rem;
-    }
-
-    .feed-hora {
-        min-width: auto;
-        font-size: 0.72rem;
-    }
-
-    .feed-ator {
-        max-width: 100px;
-        font-size: 0.8rem;
-    }
-
-    .feed-acao {
-        font-size: 0.72rem;
-        padding: 0.1rem 0.4rem;
-    }
-
-    /* Descrição do feed ocupa linha inteira */
-    .feed-item > span:last-child {
-        flex-basis: 100%;
-        padding-left: 0;
-        font-size: 0.78rem;
-    }
-
-    /* Problemas de auditoria em coluna */
-    .auditoria-problema {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.35rem;
-        font-size: 0.82rem;
+        padding: 0.85rem 0.9rem;
+        border-radius: 10px;
+        border-left-width: 4px;
+        background: var(--bg);
+        border: 1px solid var(--borda);
+        border-left-width: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .feed-item:hover {
+        background: var(--bg);
+    }
+
+    .feed-item .feed-hora {
+        min-width: auto;
+        font-size: 0.72rem;
+    }
+    .feed-item .feed-ator {
+        max-width: 100%;
+        font-size: 0.88rem;
+        white-space: normal;
+    }
+    .feed-item .feed-acao {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.5rem;
+    }
+    .feed-item .feed-desc {
+        width: 100%;
+        font-size: 0.85rem;
+        line-height: 1.45;
     }
 }
 
 /* ============================================================
-   📱 CELULAR PEQUENO (até 480px)
+   📱 RESPONSIVO — CELULAR (até 640px) — ajustes finos
    ============================================================ */
-@media (max-width: 480px) {
-    .super-admin #metricas-kpis {
-        grid-template-columns: 1fr;
+@media (max-width: 640px) {
+    /* Aviso empilha */
+    .super-aviso {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.6rem;
+        padding: 1rem;
+    }
+    .super-aviso-icon {
+        font-size: 2rem;
+    }
+    .super-aviso h2 {
+        font-size: 1rem;
+    }
+    .super-aviso p {
+        font-size: 0.82rem;
     }
 
-    .super-admin .stat .valor {
-        font-size: 1.4rem;
+    /* Alertas */
+    .alerta-item {
+        padding: 0.8rem;
+        gap: 0.55rem;
+    }
+    .alerta-item .alerta-icon {
+        font-size: 1.1rem;
+    }
+    .alerta-item .alerta-titulo {
+        font-size: 0.9rem;
+    }
+    .alerta-item .alerta-descricao {
+        font-size: 0.8rem;
     }
 
-    .super-admin .grafico-card {
-        height: 200px;
+    /* Feed — só ajustes finos, o card já foi aplicado em 1024px */
+    #feed-eventos {
+        gap: 0.65rem;
     }
 
-    .feed-ator {
-        max-width: 80px;
+    .feed-item {
+        padding: 0.8rem;
+    }
+
+    .feed-item .feed-hora {
+        font-size: 0.7rem;
+    }
+    .feed-item .feed-ator {
+        font-size: 0.85rem;
+    }
+    .feed-item .feed-acao {
+        font-size: 0.68rem;
+    }
+    .feed-item .feed-desc {
+        font-size: 0.82rem;
+    }
+
+    /* Auditoria */
+    .auditoria-problema {
+        font-size: 0.8rem;
+        padding: 0.6rem 0.7rem;
+        gap: 0.45rem;
+    }
+    .auditoria-problema .badge-nivel {
+        font-size: 0.65rem;
     }
 }
