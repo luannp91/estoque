@@ -1,7 +1,7 @@
 # 🗺️ Roadmap — Sistema de Estoque
 
-> Documento vivo com o planejamento de melhorias do projeto. Última atualização: **v3.0.0** — Sistema com hierarquia de
-> 3 níveis, super-admin e relatórios em página.
+> Documento vivo com o planejamento de melhorias do projeto. Última atualização: **v3.0.1** — 81 testes passando,
+> métricas via WebSocket, super-admin responsivo.
 
 ---
 
@@ -10,6 +10,7 @@
 | Versão     |     Status      | Foco                                          | Data alvo |
 | ---------- | :-------------: | --------------------------------------------- | --------- |
 | **v3.0.0** |  ✅ Concluído   | Super-admin, hierarquia, relatórios           | Atual     |
+| **v3.0.1** |  ✅ Concluído   | Push de métricas via WebSocket + rate limit   | Atual     |
 | **v3.1.0** | 🔄 Em andamento | Produção (deploy + Docker + backup off-site)  | Mês 1     |
 | **v3.2.0** |  📋 Planejado   | Valor de negócio (barcode, e-mail, import)    | Mês 2     |
 | **v3.3.0** |  📋 Planejado   | Operação (etiquetas, fornecedores, curva ABC) | Mês 3     |
@@ -260,7 +261,7 @@ Faça 3 perguntas:
 | ----------------------------- | :-------: | :--------: | :---------: |
 | Tempo de cadastro (1 produto) |   ~30s    |    ~5s     |     ~3s     |
 | Tempo de movimentação         |   ~15s    |    ~3s     |     ~2s     |
-| Cobertura de testes           | 80 testes | 100 testes | 150+ testes |
+| Cobertura de testes           | 81 testes | 100 testes | 150+ testes |
 | Uptime mensal                 |   local   |    99%     |    99.9%    |
 | Tempo de resposta médio (API) |     ?     |   <100ms   |    <50ms    |
 | Backup off-site               |    ❌     | ✅ diário  | ✅ contínuo |
@@ -280,6 +281,24 @@ Faça 3 perguntas:
 
 ## 📝 Notas de versão
 
+### v3.0.1 — Concluída ✅
+
+**Adicionado:**
+
+-   ⚡ Push de métricas do super-admin via WebSocket (substitui polling de 10s)
+-   ⚡ Evento `metricas:update` a cada 15s
+-   🎨 Feed de eventos vira **card em tablet** (breakpoint 1024px)
+
+**Melhorado:**
+
+-   🔒 Rate limit global ignora telemetria (super-admin, /auth/me, dashboard, lixeira/count)
+-   🔒 Admin NUNCA pode editar/remover/resetar senha de super-admin
+-   🔒 Proteção do último super-admin ativo
+-   🔒 Log de ações negadas (`SEC_ACAO_NEGADA`)
+-   🐛 Corrigido `papel = 'super'` → `'super_admin'` no metricsService
+-   🐛 Corrigido teste de rate limit (usava rota agora isenta)
+-   📊 81 testes passando (era 80)
+
 ### v3.0.0 — Concluída ✅
 
 **Adicionado:**
@@ -289,8 +308,6 @@ Faça 3 perguntas:
 -   👑 Feed de eventos em tempo real via WebSocket
 -   👑 Auditoria de segurança sob demanda
 -   🔐 Hierarquia de 3 níveis (super_admin > admin > operador)
--   🔐 Proteção do último super-admin e último admin
--   🔐 Log de ações negadas (`SEC_ACAO_NEGADA`)
 -   📄 Relatório em página dedicada com impressão PDF
 -   📄 Endpoint `/relatorios/completo`
 -   🔍 Ranking de busca por relevância (nome > SKU > descrição)

@@ -1590,3 +1590,12 @@ body.escuro .toast.info .toast-icon {
         opacity: 1;
     }
 }
+
+/* ============================================================
+   🛡️ PREVINE OVERFLOW EM GRID
+   Filhos do container podem encolher abaixo do conteúdo —
+   evita que tabelas largas forcem o grid a estourar.
+   ============================================================ */
+main.container > * {
+    min-width: 0;
+}
