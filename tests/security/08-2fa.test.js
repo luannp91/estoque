@@ -1,42 +1,50 @@
 const request = require("supertest");
-const speakeasy = require("speakeasy");
-const { app, tokenAdmin } = require("./helpers");
+const { app, loginComoAdmin, resetar2FA } = require("./helpers");
+const TotpService = require("../../src/services/totpService");
 
 describe("🔐 8. Autenticação em 2 Fatores (TOTP)", () => {
-    let token;
-    let secret;
+    let tokenAdmin;
+    let secretAtual;
 
     beforeAll(async () => {
-        token = await tokenAdmin();
-        const db = require("../../src/config/database");
-        db.prepare("UPDATE usuarios SET totp_secret = NULL, totp_ativo = 0").run();
+        // Garante que admin começa SEM 2FA ativo (evita falha em runs repetidos)
+        resetar2FA("admin@estoque.com");
+
+        tokenAdmin = await loginComoAdmin();
+    });
+
+    afterAll(() => {
+        // Limpa 2FA ao final para não afetar outras suítes
+        resetar2FA("admin@estoque.com");
     });
 
     test("Iniciar setup 2FA retorna QR code + secret", async () => {
-        const resp = await request(app).post("/api/auth/2fa/iniciar").set("Authorization", `Bearer ${token}`);
+        const resp = await request(app).post("/api/auth/2fa/iniciar").set("Authorization", `Bearer ${tokenAdmin}`);
 
         expect(resp.status).toBe(200);
         expect(resp.body.secret).toBeDefined();
         expect(resp.body.qrCode).toMatch(/^data:image\/png;base64,/);
         expect(resp.body.otpauthUrl).toContain("otpauth://totp/");
-        secret = resp.body.secret;
+
+        secretAtual = resp.body.secret;
     });
 
     test("Confirmar 2FA com código inválido → 401", async () => {
         const resp = await request(app)
             .post("/api/auth/2fa/confirmar")
-            .set("Authorization", `Bearer ${token}`)
+            .set("Authorization", `Bearer ${tokenAdmin}`)
             .send({ codigo: "000000" });
 
         expect(resp.status).toBe(401);
     });
 
     test("Confirmar 2FA com código válido ativa", async () => {
-        const codigo = speakeasy.totp({ secret, encoding: "base32" });
+        // Gera um código válido usando nosso próprio service
+        const codigo = TotpService.gerarCodigo(secretAtual);
 
         const resp = await request(app)
             .post("/api/auth/2fa/confirmar")
-            .set("Authorization", `Bearer ${token}`)
+            .set("Authorization", `Bearer ${tokenAdmin}`)
             .send({ codigo });
 
         expect(resp.status).toBe(200);
@@ -51,15 +59,14 @@ describe("🔐 8. Autenticação em 2 Fatores (TOTP)", () => {
     });
 
     test("Login com código correto funciona", async () => {
-        // 🔧 Aguarda próximo código TOTP (o anterior pode ter expirado)
-        const codigo = speakeasy.totp({ secret, encoding: "base32" });
+        const codigo = TotpService.gerarCodigo(secretAtual);
 
         const resp = await request(app)
             .post("/api/auth/login")
             .send({ email: "admin@estoque.com", senha: "admin123", codigo2fa: codigo });
 
         expect(resp.status).toBe(200);
-        expect(resp.body.token).toBeDefined();
+        expect(resp.body.token).toBeTruthy();
     });
 
     test("Login com código errado falha", async () => {
@@ -71,17 +78,9 @@ describe("🔐 8. Autenticação em 2 Fatores (TOTP)", () => {
     });
 
     test("Desativar 2FA com senha correta", async () => {
-        const codigo = speakeasy.totp({ secret, encoding: "base32" });
-        const login = await request(app)
-            .post("/api/auth/login")
-            .send({ email: "admin@estoque.com", senha: "admin123", codigo2fa: codigo });
-
-        expect(login.status).toBe(200);
-        expect(login.body.token).toBeDefined();
-
         const resp = await request(app)
             .post("/api/auth/2fa/desativar")
-            .set("Authorization", `Bearer ${login.body.token}`)
+            .set("Authorization", `Bearer ${tokenAdmin}`)
             .send({ senha: "admin123" });
 
         expect(resp.status).toBe(200);

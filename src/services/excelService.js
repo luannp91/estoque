@@ -1,4 +1,4 @@
-const ExcelJS = require("exceljs");
+const ExcelJS = require("exceljs-hardened");
 const ProdutoRepository = require("../repositories/produtoRepository");
 const MovimentacaoRepository = require("../repositories/movimentacaoRepository");
 const RelatorioService = require("./relatorioService");

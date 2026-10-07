@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 const envConfig = require("./config/env");
 envConfig.validar();
 

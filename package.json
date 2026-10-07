@@ -1,6 +1,6 @@
 {
   "name": "estoque-app",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Sistema completo de controle de estoque com hardening de segurança",
   "main": "src/server.js",
   "scripts": {
@@ -16,24 +16,34 @@
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "csurf": "^1.11.0",
+    "croner": "^10.0.1",
     "dotenv": "^16.4.5",
-    "exceljs": "^4.4.0",
+    "exceljs-hardened": "^5.0.0",
     "express": "^4.19.2",
     "express-rate-limit": "^8.7.0",
     "express-slow-down": "^3.1.1",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
-    "node-cron": "^3.0.3",
+    "multerless": "^0.1.0",
     "qrcode": "^1.5.4",
     "socket.io": "^4.7.5",
-    "speakeasy": "^2.0.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "nodemon": "^3.1.4",
-    "supertest": "^7.0.0"
+    "jest": "^30.5.2",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.1"
+  },
+  "overrides": {
+    "exceljs-hardened": {
+      "uuid": "^11.1.1"
+    },
+    "tmp": "^0.2.4",
+    "fast-csv": "^4.3.6",
+    "qs": "^6.14.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true
   }
 }
