@@ -63,6 +63,8 @@ coverage/
 .project
 .classpath
 .settings/
+jsconfig.json
+tsconfig.json
 
 # ==================== SISTEMA OPERACIONAL ====================
 .DS_Store
