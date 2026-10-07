@@ -36,3 +36,4 @@ jobs:
                   NODE_ENV: test
                   JWT_SECRET: test-secret-com-64-caracteres-para-validar-o-env-helper-1234567890
                   BACKUP_ENCRYPTION_KEY: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                  CORS_ORIGINS: http://localhost:3000
