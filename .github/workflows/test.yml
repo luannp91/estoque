@@ -1,0 +1,38 @@
+name: Testes
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main]
+
+jobs:
+    test:
+        name: Node ${{ matrix.node }}
+        runs-on: ${{ matrix.os }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                node: ["22.x"]
+                os: [ubuntu-latest]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node }}
+                  cache: "npm"
+
+            - name: Instalar dependências
+              run: npm ci
+
+            - name: Rodar testes
+              run: npm test
+              env:
+                  NODE_ENV: test
+                  JWT_SECRET: test-secret-com-64-caracteres-para-validar-o-env-helper-1234567890
+                  BACKUP_ENCRYPTION_KEY: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

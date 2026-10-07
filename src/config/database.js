@@ -246,9 +246,9 @@ const ehProducao = process.env.NODE_ENV === "production";
 const bcryptRounds = ehProducao ? 12 : 10;
 
 // ---- 4.1 Admin padrão ----
-const adminEmail = process.env.ADMIN_EMAIL || "admin@estoque.com";
-const adminSenha = process.env.ADMIN_PASSWORD || "admin123";
-const adminNome = process.env.ADMIN_NOME || "Administrador";
+const adminEmail = process.env.ADMIN_EMAIL || "admin@estoque.com"; // ⚠️ Apenas para desenvolvimento
+const adminSenha = process.env.ADMIN_PASSWORD || "admin123"; // ⚠️ Apenas para desenvolvimento
+const adminNome = process.env.ADMIN_NOME || "Administrador"; // ⚠️ Apenas para desenvolvimento
 
 if (ehProducao && !process.env.ADMIN_PASSWORD) {
   console.warn("⚠️  ADMIN_PASSWORD não definido em produção. Usando padrão INSEGURO!");
